@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug C Program (CodeLLDB)",
+      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "args": ["${input:userArgs}"],
+      "cwd": "${fileDirname}",
+      "terminal": "integrated",
+      "preLaunchTask": "C/C++: clang 生成活动文件"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "userArgs",
+      "type": "promptString",
+      "description": "请输入命令行参数（空格分隔）:"
+    }
+  ]
+}
