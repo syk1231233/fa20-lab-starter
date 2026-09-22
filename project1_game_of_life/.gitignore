@@ -249,7 +249,12 @@ $RECYCLE.BIN/
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
-# lab13 program
-server_basic server_process
-**/*._sobel.bmp
-project1_game_of_life/.gitattributes
+# proj1 programs
+gameOfLife
+imageloadertester
+steganography
+
+# proj1 artifacts
+#You can comment these lines if you wish to push these, but be sure to delete all gifs and ppms when submitting to Gradescope
+studentOutputs/**/*.ppm
+*.gif
