@@ -224,9 +224,7 @@ class TestReadMatrix(TestCase):
         cols = t.array([-1])
 
         # load the addresses to the output parameters into the argument registers
-        raise NotImplementedError("TODO")
-        # TODO
-
+        t.input_array("a0", )
         # call the read_matrix function
         t.call("read_matrix")
 

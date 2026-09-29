@@ -23,8 +23,8 @@ dest:
 
 .text
 fun:
-    addi t0, a0, 1
-    sub t1, x0, a0
+    addi t0, a0, 1  # x + 1
+    sub t1, x0, a0  # - x
     mul a0, t0, t1
     jr ra
 
