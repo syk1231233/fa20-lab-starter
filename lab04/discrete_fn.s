@@ -8,7 +8,7 @@ zero:   .asciiz "f(0) should be -38, and it is: "
 pos1:   .asciiz "f(1) should be 19, and it is: "
 pos2:   .asciiz "f(2) should be 42, and it is: "
 pos3:   .asciiz "f(3) should be 5, and it is: "
-
+#              -3, -2, -1,   0,  1,  2, 3
 output: .word   6, 61, 17, -38, 19, 42, 5
 .text
 main:
@@ -76,7 +76,14 @@ main:
 # a1 is the address of the "output" array (defined above).
 # Think: why might having a1 be useful?
 f:
-    # YOUR CODE GOES HERE!
+    # prologue
+    # para : a0 - index a1 - output array address
+    # ret  : a0 - evalate number
+    addi a0, a0, 3
+    slli a0, a0, 2
+    
+    add  a1, a1, a0
+    lw   a0, 0(a1)
 
     jr ra               # Always remember to jr ra after your function!
 
