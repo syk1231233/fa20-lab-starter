@@ -1,7 +1,7 @@
 ##############################################################
 # Do not modify! (But feel free to use the functions provided)
 ##############################################################
-
+# System call
 #define c_print_int 1
 #define c_print_str 4
 #define c_atoi 5

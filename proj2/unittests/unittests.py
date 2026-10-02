@@ -220,22 +220,43 @@ class TestReadMatrix(TestCase):
         t.input_read_filename("a0", "inputs/test_read_matrix/test_input.bin")
 
         # allocate space to hold the rows and cols output parameters
+        # why -1, it is just a initial number
         rows = t.array([-1])
         cols = t.array([-1])
 
         # load the addresses to the output parameters into the argument registers
-        t.input_array("a0", )
+        t.input_array("a1", rows)
+        t.input_array("a2", cols)
         # call the read_matrix function
         t.call("read_matrix")
 
         # check the output from the function
-        # TODO
+        # 3 3
+        # 1 2 3
+        # 4 5 6
+        # 7 8 9
+        if code == 0:
+            t.check_array(rows,[3])
+            t.check_array(cols,[3])
+            t.check_array_pointer("a0",[1,2,3,4,5,6,7,8,9])
 
         # generate assembly and run it through venus
         t.execute(fail=fail, code=code)
 
     def test_simple(self):
         self.do_read_matrix()
+
+    def test_malloc_fail(self):
+        self.do_read_matrix(fail="malloc", code= 88)
+
+    def test_fopen_fail(self):
+        self.do_read_matrix(fail='fopen', code=90)
+
+    def test_fread_fail(self):
+        self.do_read_matrix(fail='fread', code=91)
+
+    def test_fclose_fail(self):
+        self.do_read_matrix(fail='fclose', code=92)
 
     @classmethod
     def tearDownClass(cls):
@@ -250,15 +271,27 @@ class TestWriteMatrix(TestCase):
         # load output file name into a0 register
         t.input_write_filename("a0", outfile)
         # load input array and other arguments
-        raise NotImplementedError("TODO")
-        # TODO
+        arr = t.array([1,2,3,4,5,6,7,8,9])
+        t.input_array("a1",arr)
+        t.input_scalar("a2", 3)
+        t.input_scalar("a3", 3)
         # call `write_matrix` function
         t.call("write_matrix")
         # generate assembly and run it through venus
         t.execute(fail=fail, code=code)
-        # compare the output file against the reference
-        t.check_file_output(outfile, "outputs/test_write_matrix/reference.bin")
+        if code == 0:
+            # compare the output file against the reference
+            t.check_file_output(outfile, "outputs/test_write_matrix/reference.bin")
 
+    def test_fopen_fail(self):
+        self.do_write_matrix(fail='fopen', code=93)
+
+    def test_fwrite_fail(self):
+        self.do_write_matrix(fail='fwrite', code=94)
+
+    def test_fclose_fail(self):
+        self.do_write_matrix(fail='fclose', code=95)
+    
     def test_simple(self):
         self.do_write_matrix()
 
@@ -285,16 +318,52 @@ class TestClassify(TestCase):
         ref_file = "outputs/test_basic_main/reference0.bin"
         args = ["inputs/simple0/bin/m0.bin", "inputs/simple0/bin/m1.bin",
                 "inputs/simple0/bin/inputs/input0.bin", out_file]
+        t.input_scalar("a2", 0)  # 传入非 0，禁止打印
         # call classify function
         t.call("classify")
         # generate assembly and pass program arguments directly to venus
         t.execute(args=args)
 
         # compare the output file and
-        raise NotImplementedError("TODO")
-        # TODO
+        t.check_file_output(out_file, ref_file)
         # compare the classification output with `check_stdout`
+        t.check_stdout("2")
 
+    def test_simple0_input0_silent(self):
+        # 2. 静默测试：当 a2 == 1 时，不打印任何内容，但返回值 a0 仍为 2
+        t = self.make_test()
+        out_file = "outputs/test_basic_main/student0.bin"
+        ref_file = "outputs/test_basic_main/reference0.bin"
+        args = ["inputs/simple0/bin/m0.bin", "inputs/simple0/bin/m1.bin",
+                "inputs/simple0/bin/inputs/input0.bin", out_file]
+        
+        t.input_scalar("a2", 1)  # 传入非 0，禁止打印
+        t.call("classify")
+        t.execute(args=args)
+
+        t.check_file_output(out_file, ref_file)
+        t.check_stdout("")       # 控制台必须空空如也
+        t.check_scalar("a0", 2)  # 返回值依然要是 2
+
+    def test_invalid_argc(self):
+        # 3. 参数过少测试：只有 3 个路径（argc = 4 != 5） -> 退出码 89
+        t = self.make_test()
+        args = ["inputs/simple0/bin/m0.bin", "inputs/simple0/bin/m1.bin",
+                "inputs/simple0/bin/inputs/input0.bin"]
+        t.input_scalar("a2", 0)  # 传入非 0，禁止打印
+        t.call("classify")
+        t.execute(args=args, code=89)
+
+    def test_malloc_fail(self):
+        # 4. 模拟堆分配失败 -> 退出码 88
+        t = self.make_test()
+        out_file = "outputs/test_basic_main/student0.bin"
+        args = ["inputs/simple0/bin/m0.bin", "inputs/simple0/bin/m1.bin",
+                "inputs/simple0/bin/inputs/input0.bin", out_file]
+        t.input_scalar("a2", 0)  # 传入非 0，禁止打印
+        t.call("classify")
+        t.execute(args=args, fail="malloc", code=88)
+    
     @classmethod
     def tearDownClass(cls):
         print_coverage("classify.s", verbose=False)
