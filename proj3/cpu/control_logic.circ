@@ -251,6 +251,11 @@ end TCL_Generic;
       <a name="facing" val="north"/>
       <a name="label" val="BrLt"/>
     </comp>
+    <comp lib="0" loc="(300,360)" name="Constant">
+      <a name="value" val="0x0"/>
+      <a name="width" val="4"/>
+    </comp>
+    <comp lib="0" loc="(300,390)" name="Constant"/>
     <comp lib="0" loc="(350,210)" name="Pin">
       <a name="facing" val="south"/>
       <a name="label" val="PCSel"/>
@@ -267,6 +272,13 @@ end TCL_Generic;
     </comp>
     <comp lib="0" loc="(420,230)" name="Tunnel">
       <a name="facing" val="north"/>
+      <a name="label" val="RegWEn"/>
+    </comp>
+    <comp lib="0" loc="(420,360)" name="Tunnel">
+      <a name="label" val="ALUSel"/>
+      <a name="width" val="4"/>
+    </comp>
+    <comp lib="0" loc="(420,390)" name="Tunnel">
       <a name="label" val="RegWEn"/>
     </comp>
     <comp lib="0" loc="(500,210)" name="Pin">
@@ -366,6 +378,8 @@ end TCL_Generic;
     <wire from="(250,210)" to="(250,230)"/>
     <wire from="(270,230)" to="(280,230)"/>
     <wire from="(280,100)" to="(280,230)"/>
+    <wire from="(300,360)" to="(420,360)"/>
+    <wire from="(300,390)" to="(420,390)"/>
     <wire from="(310,150)" to="(1040,150)"/>
     <wire from="(310,150)" to="(310,230)"/>
     <wire from="(310,230)" to="(330,230)"/>
