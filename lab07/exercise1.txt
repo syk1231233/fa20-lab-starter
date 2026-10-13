@@ -1,24 +1,24 @@
 Scenario 1
-    1.
-    2.
-    3.
+    1. step size, cache size
+    2. 0.0
+    3. step size, 1
 
 Scenario 2
-    1.
-    2.
-    3.
+    1. 2
+    2. MHHH
+    3. 1.0
 
 Scenario 3
-    1.
-    2.
-    3.
-    4.
-    5.
+    1. 0.50, 0.00, 0.50
+    2. 32, 16
+    3. 16
+    4. rep count
+    5. =, =, +, =
 
 --- lines below are ignored by the AG ---
 
-Checkoff Question 1:
-Checkoff Question 2:
-Checkoff Question 3:
-Checkoff Question 4:
-Checkoff Question 5:
+Checkoff Question 1: 步长 32B = cache 容量 32B，0/32/64/96 全映射到 index 0，互相踢出，全是冲突缺失；rep 再多也一样，0
+Checkoff Question 2: step size 改成 1，或 option 改成 1（sw 紧跟 lw 必中）；另外 array size 改成 32 也行
+Checkoff Question 3: 块 16B 装 2 个元素，每个元素 lw+sw，每块 4 次访问只有第一次强制缺失 → MHHH，0.75
+Checkoff Question 4: 数组 256B = cache 256B 全装得下，第 2 遍起全中，第 1 遍的 miss 被摊薄 → 1.0
+Checkoff Question 5: 每次处理数组的一段（约 cache 大小），把全部 Rep 的函数施加到这一段，做完再换下一段

@@ -24,7 +24,7 @@ array:	.word	2048		# max array size specified in BYTES (DO NOT CHANGE)
 main:	li	a0, 256		# array size in BYTES (power of 2 < array size)
 	li	a1, 2		# step size  (power of 2 > 0)
 	li	a2, 1		# rep count  (int > 0)
-	li	a3, 1		# 0 - option 0, 1 - option 1
+	li	a3, 1		# 0 - option 0 wirte , 1 - option 1 read and write
 # You MAY change the code above this section
 ##################################################################################################
 

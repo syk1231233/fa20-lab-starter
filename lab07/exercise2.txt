@@ -1,8 +1,8 @@
-1.
-2.
+1. jki, kji
+2. ikj, kij
 
 --- lines below are ignored by the AG ---
 
-Checkoff Question 1:
-Checkoff Question 2:
-Checkoff Question 3:
+Checkoff Question 1: 最内层是 i：A 步长 1、B 步长 0、C 步长 1，没有步长 n 的访问，块内连续访问，命中率最高（M4 实测 32 / 27 Gflop/s）
+Checkoff Question 2: 最内层是 j：A 步长 0、B 和 C 步长都是 n，每次迭代两次换块。注意 M4 上 n=1000 时三个矩阵共 12MB < 16MB L2，ikj/kij 反而比 ijk/jik 快；n=2000（48MB）时 ikj/kij 才变成最慢（2.2 / 2.3）
+Checkoff Question 3: 最内层循环的步长决定空间局部性：0 最好（留在寄存器），1 次之（一个块用多次），n 最差（几乎每次都缺失）；步长为 n 的矩阵越多越慢
