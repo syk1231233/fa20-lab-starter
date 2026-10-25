@@ -1,19 +1,19 @@
 Exercise 1:
-    1.
-    2.
-    3.
+    1. 32
+    2. 4, 6, 0, 6
+    3. no, no
 
 Exercise 2:
-    1.
+    1. 00, 20, 40, 60, 80, A0, C0, E0, 00, 20
 
 Exercise 3:
-    1.
+    1. physical memory size
 
 --- lines below are ignored by the AG ---
 
 Exercise 1 Checkoff Questions:
-    1.
-    2.
+    1. split VA into VPN+offset -> TLB miss -> index page table by VPN, valid=0 -> page fault -> OS loads page from disk into first free frame (or LRU victim, invalidating its PTE) -> update PTE (PPN, valid=1) -> update TLB -> PA = PPN + offset
+    2. 8 virtual pages but only 4 physical frames; page size is the same so offset bits match, and 2 bits are enough to number 4 frames
 
 Exercise 4 Checkoff Question:
-    1.
+    1. P1-P4 are 4 processes, each with its own page table, sharing one TLB and physical memory. On every context switch the TLB entries belong to the previous process (flushed or useless), so the new process misses until it refills the TLB; locality is broken. CAMERA runs only 1 process.
