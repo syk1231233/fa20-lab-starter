@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=--std=c99 -Wall
+CFLAGS=--std=c99 -Wall 
 
 simd: test_simd.o simd.o
 	$(CC) $(CFLAGS) -o simd test_simd.o simd.o
