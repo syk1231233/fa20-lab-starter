@@ -36,8 +36,10 @@ void v_add_optimized_adjacent(double* x, double* y, double* z) {
   // TODO: Modify this function
   // Do NOT use the `for` directive here!
   #pragma omp parallel
-  {
-    for(int i=0; i<ARRAY_SIZE; i++)
+  { 
+    int thread_nums = omp_get_num_threads();
+    int thread_id = omp_get_thread_num();
+    for(int i = thread_id; i<ARRAY_SIZE; i += thread_nums)
       z[i] = x[i] + y[i];
   }
 }
@@ -46,11 +48,20 @@ void v_add_optimized_adjacent(double* x, double* y, double* z) {
 void v_add_optimized_chunks(double* x, double* y, double* z) {
   // TODO: Modify this function
   // Do NOT use the `for` directive here!
+  // 向上取整
   #pragma omp parallel
-  {
-    for(int i=0; i<ARRAY_SIZE; i++)
+  {  
+    int thread_nums = omp_get_num_threads();
+    int thread_id = omp_get_thread_num();
+    int block_size = (ARRAY_SIZE + thread_nums - 1) / thread_nums;
+    int begin = block_size * thread_id;
+    int end = begin + block_size;
+    if(end > ARRAY_SIZE) end = ARRAY_SIZE;
+    for(int i = begin; i < end; i++){
       z[i] = x[i] + y[i];
+    }  
   }
+
 }
 // END PART 1 EX 2
 
@@ -72,13 +83,15 @@ double dotp_naive(double* x, double* y, int arr_size) {
 double dotp_manual_optimized(double* x, double* y, int arr_size) {
   // TODO: Modify this function
   // Do NOT use the `reduction` directive here!
-  double global_sum = 0.0;
+   double global_sum = 0.0;
   #pragma omp parallel
   {
+    double local_sum = 0.0;
     #pragma omp for
     for (int i = 0; i < arr_size; i++)
-      #pragma omp critical
-      global_sum += x[i] * y[i];
+      local_sum += x[i] * y[i];
+    #pragma omp critical
+    global_sum += local_sum;
   }
   return global_sum;
 }
@@ -88,13 +101,9 @@ double dotp_reduction_optimized(double* x, double* y, int arr_size) {
   // TODO: Modify this function
   // Please DO use the `reduction` directive here!
   double global_sum = 0.0;
-  #pragma omp parallel
-  {
-    #pragma omp for
+  #pragma omp parallel for reduction(+:global_sum)
     for (int i = 0; i < arr_size; i++)
-      #pragma omp critical
-      global_sum += x[i] * y[i];
-  }
+     global_sum += x[i] * y[i]; 
   return global_sum;
 }
 // END PART 1 EX 3
